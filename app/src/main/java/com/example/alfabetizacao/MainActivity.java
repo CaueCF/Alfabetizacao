@@ -3,18 +3,20 @@ package com.example.alfabetizacao;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    //public ArrayList<Button> btns;
+    private ArrayList<Button> btns;
     private Button l1, l2, l3, l4;
     private TextView palavra;
     private ArrayList<Elemento> imagens;
-
+    private LinearLayout imagem, botoes;
 
 
     @Override
@@ -22,9 +24,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        imagem = (LinearLayout) findViewById(R.id.layoutImagem);
+        botoes = (LinearLayout) findViewById(R.id.layoutBotoes);
+
         imagens = new ArrayList<Elemento>();
         carregaElemento();
 
+        for(char c: imagens.get(0).getTextoImagem().toCharArray()){
+            Button atual = new Button(this);
+            atual.setText(c);
+            atual.setOnClickListener(this);
+            btns.add(atual);
+        }
 
     }
 
@@ -39,4 +50,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View view) {
+
+    }
 }
