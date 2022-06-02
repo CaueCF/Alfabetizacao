@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             btns.add(atual);
         }
 
+        Collections.shuffle(btns);
+
     }
 
     public void carregaElemento(){
@@ -52,6 +55,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    @Override
+
 
 }
