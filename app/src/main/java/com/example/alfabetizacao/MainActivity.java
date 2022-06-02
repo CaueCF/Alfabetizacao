@@ -44,9 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         e1.setImagem(R.drawable.casa);
         e1.setTextoImagem("Casa");
         imagens.add(e1);
-
-
-
     }
 
 
@@ -54,4 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
 
     }
+
+    @Override
+
 }
