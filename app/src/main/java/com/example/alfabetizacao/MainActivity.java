@@ -61,14 +61,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             botoes.addView(b);
             TextView t = new TextView(this);
-            t.setId(i);
+            t.setId(10+i);
             b.setId(i);
             text.addView(t);
             i++;
         }
     }
 
-
+    public void adicionaLetra(char c){
+    }
 
     @Override
     public void onClick(View view) {
