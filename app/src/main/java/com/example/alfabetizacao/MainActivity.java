@@ -3,6 +3,7 @@ package com.example.alfabetizacao;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -12,12 +13,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, Runnable {
 
     private ArrayList<Button> btns;
     private Button principal;
     private ArrayList<Elemento> imagens;
     private LinearLayout botoes, text;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,16 +33,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imagens = new ArrayList<Elemento>();
         carregaElemento();
 
-        for(char c: imagens.get(0).getTextoImagem().toCharArray()){
-            Button atual = new Button(this);
-            atual.setText(c);
-            atual.setOnClickListener(this);
-            btns.add(atual);
-        }
+        btns = new ArrayList<Button>();
 
-        Collections.shuffle(btns);
-
-        carregaJogo();
+        handler = new Handler();
+        handler.postDelayed(this, 2500);
 
     }
 
@@ -58,11 +54,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         int i = 0;
         for(Button b: btns){
-
-            botoes.addView(b);
             TextView t = new TextView(this);
             t.setId(10+i);
             b.setId(i);
+            botoes.addView(b);
             text.addView(t);
             i++;
         }
@@ -77,5 +72,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    @Override
+    public void run() {
+        for(char c: imagens.get(0).getTextoImagem().toCharArray()){
+            Button atual = new Button(this);
+            atual.setText(Character.toString(c));
+            atual.setOnClickListener(this);
+            btns.add(atual);
+        }
 
+        Collections.shuffle(btns);
+
+        carregaJogo();
+    }
 }
