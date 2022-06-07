@@ -2,6 +2,7 @@ package com.example.alfabetizacao;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -100,11 +101,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         principal.setCompoundDrawablesRelativeWithIntrinsicBounds(null,
                 getResources().getDrawable(imagens.get(0).getImagem()),null, null);
 
+        principal.setClickable(false);
+
         int i = 0;
         for(Button b: btns){
             TextView t = new TextView(this);
             t.setId(10+i);
             b.setId(i);
+            t.setBackgroundColor(Color.RED);
+            //t.setText("teste  ");
             botoes.addView(b);
             text.addView(t);
             i++;
