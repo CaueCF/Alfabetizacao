@@ -109,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             t.setId(10+i);
             b.setId(i);
             t.setBackgroundColor(Color.RED);
-            //t.setText("teste  ");
+            t.setText(b.getText());
+            t.setTextSize(28);
             botoes.addView(b);
             text.addView(t);
             i++;
@@ -117,13 +118,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void adicionaLetra(char c){
+
     }
 
     @Override
     public void onClick(View view) {
-        /*if(view == findViewById()){
+        for(Button b: btns) {
+            if (view.getId() == b.getId()) {
 
-        }*/
+            }
+        }
     }
 
 
