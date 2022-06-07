@@ -45,52 +45,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void carregaElemento(){
         Elemento e1 = new Elemento();
         e1.setImagem(R.drawable.casa);
-        e1.setTextoImagem("Casa");
+        e1.setTextoImagem("CASA");
         imagens.add(e1);
 
         Elemento e2 = new Elemento();
         e2.setImagem(R.drawable.pato);
-        e2.setTextoImagem("Pato");
+        e2.setTextoImagem("PATO");
         imagens.add(e2);
 
         Elemento e3 = new Elemento();
         e3.setImagem(R.drawable.vaca);
-        e3.setTextoImagem("Vaca");
+        e3.setTextoImagem("VACA");
         imagens.add(e3);
 
         Elemento e4 = new Elemento();
         e4.setImagem(R.drawable.mesa);
-        e4.setTextoImagem("Mesa");
+        e4.setTextoImagem("MESA");
         imagens.add(e4);
 
         Elemento e5 = new Elemento();
         e5.setImagem(R.drawable.lobo);
-        e5.setTextoImagem("Lobo");
+        e5.setTextoImagem("LOBO");
         imagens.add(e5);
 
         Elemento e6 = new Elemento();
         e6.setImagem(R.drawable.osso);
-        e6.setTextoImagem("Osso");
+        e6.setTextoImagem("OSSO");
         imagens.add(e6);
 
         Elemento e7 = new Elemento();
         e7.setImagem(R.drawable.bola);
-        e7.setTextoImagem("Bola");
+        e7.setTextoImagem("BOLA");
         imagens.add(e7);
 
         Elemento e8 = new Elemento();
         e8.setImagem(R.drawable.copo);
-        e8.setTextoImagem("Copo");
+        e8.setTextoImagem("COPO");
         imagens.add(e8);
 
         Elemento e9 = new Elemento();
         e9.setImagem(R.drawable.gato);
-        e9.setTextoImagem("Gato");
+        e9.setTextoImagem("GATO");
         imagens.add(e9);
 
         Elemento e10 = new Elemento();
         e10.setImagem(R.drawable.urso);
-        e10.setTextoImagem("Urso");
+        e10.setTextoImagem("URSO");
         imagens.add(e10);
     }
 
