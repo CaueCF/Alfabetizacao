@@ -9,7 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +24,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Elemento> imagens;
     private LinearLayout botoes, text;
     private Handler handler;
+    private int vazio;
+    private Elemento aux;
+    private ProgressBar progresso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +36,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         botoes = (LinearLayout) findViewById(R.id.layoutBotoes);
         text =  (LinearLayout) findViewById(R.id.layoutText);
         principal = (Button) findViewById(R.id.buttonImagem);
+        progresso = (ProgressBar) findViewById(R.id.progressBar);
+
+        progresso.setPadding(100,0,100,0);
 
         imagens = new ArrayList<Elemento>();
         carregaElemento();
         Collections.shuffle(imagens);
 
+        progresso.setMax(imagens.size());
+
+        aux = imagens.get(0);
         btns = new ArrayList<Button>();
+        vazio = aux.getTextoImagem().length()-1;
 
         handler = new Handler();
         handler.postDelayed(this, 2500);
@@ -94,46 +107,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imagens.add(e10);
     }
 
-
-
     public void carregaJogo(){
 
-        principal.setCompoundDrawablesRelativeWithIntrinsicBounds(null,
-                getResources().getDrawable(imagens.get(0).getImagem()),null, null);
-
-        principal.setClickable(false);
-
-        int i = 0;
-        for(Button b: btns){
-            TextView t = new TextView(this);
-            t.setId(10+i);
-            b.setId(i);
-            t.setBackgroundColor(Color.RED);
-            t.setText(b.getText());
-            t.setTextSize(28);
-            botoes.addView(b);
-            text.addView(t);
-            i++;
-        }
-    }
-
-    public void adicionaLetra(char c){
-
-    }
-
-    @Override
-    public void onClick(View view) {
-        for(Button b: btns) {
-            if (view.getId() == b.getId()) {
-
-            }
-        }
-    }
-
-
-    @Override
-    public void run() {
-        for(char c: imagens.get(0).getTextoImagem().toCharArray()){
+        for(char c: aux.getTextoImagem().toCharArray()){
             Button atual = new Button(this);
             atual.setText(Character.toString(c));
             atual.setOnClickListener(this);
@@ -142,6 +118,109 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Collections.shuffle(btns);
 
+        principal.setCompoundDrawablesRelativeWithIntrinsicBounds(null,
+                getResources().getDrawable(aux.getImagem()),null, null);
+
+        principal.setClickable(false);
+
+        int i = 0;
+        for(Button b: btns){
+            TextView t = new TextView(this);
+            t.setId(10+i);
+            b.setId(i);
+            //t.setBackgroundColor(Color.rgb(255,253,208));
+            t.setText("_");
+            t.setTextSize(40);
+            t.setTextColor(Color.BLACK);
+            t.setPadding(0,0,80,0);
+            botoes.addView(b);
+            text.addView(t);
+            i++;
+        }
+    }
+
+    public void adicionaLetra(char c){
+        for(int i = 10; i<15; i++){
+            TextView t = findViewById(i);
+            if(t.getText() == "_"){
+                t.setText(Character.toString(c));
+                break;
+            }
+        }
+    }
+
+    public void verificaPalavra(){
+
+        String palavra = new String();
+        String correta = aux.getTextoImagem();
+        for(int i = 10; i<=14; i++){
+            TextView t = findViewById(i);
+            if(t != null) {
+                palavra += t.getText();
+            }
+        }
+
+        for(int i = 0; i<palavra.length(); i++){
+
+            TextView t = findViewById(10+i);
+            Button b = btns.get(i);
+
+            if(palavra.charAt(i) != correta.charAt(i)){
+
+                if(t != null && b != null) {
+                    t.setText("_");
+                    t.setTextColor(Color.rgb(101,63,33));
+                    b.setClickable(true);
+                    vazio++;
+                }
+            }else{
+                if(t != null && b != null) {
+                    b.setBackgroundColor(Color.GREEN);
+                }
+            }
+        }
+
+        if(vazio == 0){
+            if(!imagens.isEmpty()) {
+                imagens.remove(0);
+                aux = imagens.get(0);
+                text.removeAllViews();
+                botoes.removeAllViews();
+                btns.clear();
+                carregaJogo();
+                int passo = progresso.getProgress()+1;
+                progresso.setProgress(passo);
+                vazio = aux.getTextoImagem().length() - 1;
+            }
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(vazio>0) {
+            vazio--;
+            for (Button b : btns) {
+                if (view.getId() == b.getId()) {
+                    b.setClickable(false);
+                    b.setBackgroundColor(Color.BLUE);
+                    adicionaLetra(b.getText().charAt(0));
+                }
+            }
+        }else{
+            for (Button b : btns) {
+                if (view.getId() == b.getId()) {
+                    b.setClickable(false);
+                    b.setBackgroundColor(Color.BLUE);
+                    adicionaLetra(b.getText().charAt(0));
+                }
+            }
+            verificaPalavra();
+        }
+    }
+
+    @Override
+    public void run() {
         carregaJogo();
+        progresso.setProgress(0);
     }
 }
