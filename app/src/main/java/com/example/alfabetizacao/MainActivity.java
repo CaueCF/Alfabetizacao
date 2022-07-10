@@ -190,18 +190,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     vazio++;
 
                 } else {
+
                     t.setTextColor(Color.BLACK);
-
-                    /*for(Button l: btns){
-
-                        if(l.getText().charAt(0)==palavra.charAt(i)){
-
-                            b.setBackgroundColor(Color.GREEN);
-                            b.setTextColor(Color.BLACK);
-                            break;
-                        }
-                    }*/
-
                 }
             }
         }
