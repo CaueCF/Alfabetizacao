@@ -151,70 +151,107 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void verificaPalavra(){
 
+        vazio = -1;
         String palavra = new String();
         String correta = aux.getTextoImagem();
+
         for(int i = 10; i<=14; i++){
+
             TextView t = findViewById(i);
+
             if(t != null) {
+
                 palavra += t.getText();
             }
         }
 
         for(int i = 0; i<palavra.length(); i++){
 
-            TextView t = findViewById(10+i);
+            TextView t = findViewById(10 + i);
             Button b = btns.get(i);
 
-            if(palavra.charAt(i) != correta.charAt(i)){
+            if(t != null && b != null) {
 
-                if(t != null && b != null) {
+                if (palavra.charAt(i) != correta.charAt(i)) {
+
                     t.setText("_");
-                    t.setTextColor(Color.rgb(101,63,33));
-                    b.setClickable(true);
+                    t.setTextColor(Color.rgb(101, 63, 33));
+
+                    for (Button l : btns) {
+
+                        if (l.getText().charAt(0) == palavra.charAt(i)) {
+
+                            l.setVisibility(View.VISIBLE);
+                            l.setClickable(true);
+                            l.setBackgroundColor(Color.rgb(101, 63, 33)); //marrom
+                            break;
+                        }
+                    }
                     vazio++;
-                }
-            }else{
-                if(t != null && b != null) {
-                    b.setBackgroundColor(Color.GREEN);
+
+                } else {
+                    t.setTextColor(Color.BLACK);
+
+                    /*for(Button l: btns){
+
+                        if(l.getText().charAt(0)==palavra.charAt(i)){
+
+                            b.setBackgroundColor(Color.GREEN);
+                            b.setTextColor(Color.BLACK);
+                            break;
+                        }
+                    }*/
+
                 }
             }
         }
 
-        if(vazio == 0){
-            if(!imagens.isEmpty()) {
-                imagens.remove(0);
-                aux = imagens.get(0);
-                text.removeAllViews();
-                botoes.removeAllViews();
-                btns.clear();
-                carregaJogo();
-                int passo = progresso.getProgress()+1;
-                progresso.setProgress(passo);
-                vazio = aux.getTextoImagem().length() - 1;
-            }
+        if(vazio == -1){
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+
+                public void run() {
+
+                    if(!imagens.isEmpty()) {
+
+                        imagens.remove(0);
+                        aux = imagens.get(0);
+                        text.removeAllViews();
+                        botoes.removeAllViews();
+                        btns.clear();
+
+                        carregaJogo();
+
+                        int passo = progresso.getProgress()+1;
+                        progresso.setProgress(passo);
+                        vazio = aux.getTextoImagem().length() - 1;
+                    }
+                }
+            }, 5000);
         }
     }
 
     @Override
     public void onClick(View view) {
-        if(vazio>0) {
-            vazio--;
-            for (Button b : btns) {
-                if (view.getId() == b.getId()) {
-                    b.setClickable(false);
-                    b.setBackgroundColor(Color.BLUE);
-                    adicionaLetra(b.getText().charAt(0));
+
+        for (Button b : btns) {
+
+            if (view.getId() == b.getId()) {
+
+                b.setClickable(false);
+                b.setVisibility(View.INVISIBLE);
+                adicionaLetra(b.getText().charAt(0));
+
+                if (vazio > 0) {
+
+                    vazio--;
+
+                } else {
+
+                    verificaPalavra();
                 }
             }
-        }else{
-            for (Button b : btns) {
-                if (view.getId() == b.getId()) {
-                    b.setClickable(false);
-                    b.setBackgroundColor(Color.BLUE);
-                    adicionaLetra(b.getText().charAt(0));
-                }
-            }
-            verificaPalavra();
         }
     }
 
