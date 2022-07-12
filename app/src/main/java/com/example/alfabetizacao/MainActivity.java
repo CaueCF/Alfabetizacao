@@ -2,17 +2,15 @@ package com.example.alfabetizacao;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progresso.setPadding(100,0,100,0);
 
         imagens = new ArrayList<Elemento>();
-        carregaElemento();
+        carregaElementoLetra();
         Collections.shuffle(imagens);
 
         progresso.setMax(imagens.size());
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void carregaElemento(){
+    public void carregaElementoLetra(){
         Elemento e1 = new Elemento();
         e1.setImagem(R.drawable.casa);
         e1.setTextoImagem("CASA");
@@ -89,6 +87,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Elemento e7 = new Elemento();
         e7.setImagem(R.drawable.bola);
         e7.setTextoImagem("BOLA");
+        imagens.add(e7);
+
+        Elemento e8 = new Elemento();
+        e8.setImagem(R.drawable.copo);
+        e8.setTextoImagem("COPO");
+        imagens.add(e8);
+
+        Elemento e9 = new Elemento();
+        e9.setImagem(R.drawable.gato);
+        e9.setTextoImagem("GATO");
+        imagens.add(e9);
+
+        Elemento e10 = new Elemento();
+        e10.setImagem(R.drawable.urso);
+        e10.setTextoImagem("URSO");
+        imagens.add(e10);
+    }
+
+    public void carregaElementoSilaba(){
+        Elemento e1 = new Elemento();
+        e1.setImagem(R.drawable.banana);
+        e1.setTextoImagem("BA-NA-NA");
+        imagens.add(e1);
+
+        Elemento e2 = new Elemento();
+        e2.setImagem(R.drawable.abelha);
+        e2.setTextoImagem("A-BE-LHA");
+        imagens.add(e2);
+
+        Elemento e3 = new Elemento();
+        e3.setImagem(R.drawable.janela);
+        e3.setTextoImagem("JA-NE-LA");
+        imagens.add(e3);
+
+        Elemento e4 = new Elemento();
+        e4.setImagem(R.drawable.oculos);
+        e4.setTextoImagem("Ó-CU-LOS");
+        imagens.add(e4);
+
+        Elemento e5 = new Elemento();
+        e5.setImagem(R.drawable.sapato);
+        e5.setTextoImagem("SA-PA-TO");
+        imagens.add(e5);
+
+        Elemento e6 = new Elemento();
+        e6.setImagem(R.drawable.piscina);
+        e6.setTextoImagem("PIS-CI-NA");
+        imagens.add(e6);
+
+        Elemento e7 = new Elemento();
+        e7.setImagem(R.drawable.tucano);
+        e7.setTextoImagem("TU-CA-NO");
         imagens.add(e7);
 
         Elemento e8 = new Elemento();
@@ -198,6 +248,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(vazio == -1){
 
+            if(imagens.isEmpty()){
+                Intent k = new Intent(this, Vitoria.class);
+                startActivity(k);
+            }
+
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
 
@@ -218,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         vazio = aux.getTextoImagem().length() - 1;
                     }
                 }
-            }, 5000);
+            }, 1500);
         }
     }
 
@@ -247,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void run() {
-        carregaJogo();
         progresso.setProgress(0);
+        carregaJogo();
     }
 }
