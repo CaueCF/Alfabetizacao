@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         principal = (Button) findViewById(R.id.buttonImagem);
         progresso = (ProgressBar) findViewById(R.id.progressBar);
 
+        String x = new String();
         Intent i = getIntent();
         Intent i2 = getIntent();
 
@@ -43,13 +44,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Bundle so = new Bundle();
             so = i.getExtras();
             if (so != null) {
-                String x = so.getString("soletrando", null);
+                x = so.getString("soletrando", null);
             }
         } else if (i2 != null) {
             Bundle si = new Bundle();
             si = i.getExtras();
             if (si != null) {
-                String x = si.getString("silabas", null);
+                x = si.getString("silabas", null);
             }
         }
 
@@ -57,12 +58,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         imagens = new ArrayList<Elemento>();
 
-        if()
-        carregaElementoLetra();
+        if(x.equals("soletrando")) {
+            carregaElementoLetra();
+        }else if(x.equals("silabas")){
+            carregaElementoSilaba();
+        }
         Collections.shuffle(imagens);
 
         progresso.setMax(imagens.size());
-
         aux = imagens.get(0);
         btns = new ArrayList<Button>();
         vazio = aux.getTextoImagem().length() - 1;
