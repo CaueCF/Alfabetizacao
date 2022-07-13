@@ -32,13 +32,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         botoes = (LinearLayout) findViewById(R.id.layoutBotoes);
-        text =  (LinearLayout) findViewById(R.id.layoutText);
+        text = (LinearLayout) findViewById(R.id.layoutText);
         principal = (Button) findViewById(R.id.buttonImagem);
         progresso = (ProgressBar) findViewById(R.id.progressBar);
 
-        progresso.setPadding(100,0,100,0);
+        Intent i = getIntent();
+        Intent i2 = getIntent();
+
+        if (i != null) {
+            Bundle so = new Bundle();
+            so = i.getExtras();
+            if (so != null) {
+                String x = so.getString("soletrando", null);
+            }
+        } else if (i2 != null) {
+            Bundle si = new Bundle();
+            si = i.getExtras();
+            if (si != null) {
+                String x = si.getString("silabas", null);
+            }
+        }
+
+        progresso.setPadding(100, 0, 100, 0);
 
         imagens = new ArrayList<Elemento>();
+
+        if()
         carregaElementoLetra();
         Collections.shuffle(imagens);
 
@@ -46,10 +65,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         aux = imagens.get(0);
         btns = new ArrayList<Button>();
-        vazio = aux.getTextoImagem().length()-1;
+        vazio = aux.getTextoImagem().length() - 1;
 
         handler = new Handler();
         handler.postDelayed(this, 2500);
+
 
     }
 
@@ -142,18 +162,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imagens.add(e7);
 
         Elemento e8 = new Elemento();
-        e8.setImagem(R.drawable.copo);
-        e8.setTextoImagem("COPO");
+        e8.setImagem(R.drawable.jacare);
+        e8.setTextoImagem("JA-CA-RÉ");
         imagens.add(e8);
 
         Elemento e9 = new Elemento();
-        e9.setImagem(R.drawable.gato);
-        e9.setTextoImagem("GATO");
+        e9.setImagem(R.drawable.abacaxi);
+        e9.setTextoImagem("A-BA-CA-XI");
         imagens.add(e9);
 
         Elemento e10 = new Elemento();
-        e10.setImagem(R.drawable.urso);
-        e10.setTextoImagem("URSO");
+        e10.setImagem(R.drawable.boneca);
+        e10.setTextoImagem("BO-NE-CA");
         imagens.add(e10);
     }
 
@@ -248,10 +268,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(vazio == -1){
 
-            if(imagens.isEmpty()){
-                Intent k = new Intent(this, Vitoria.class);
-                startActivity(k);
-            }
+
 
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -274,6 +291,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
             }, 1500);
+
+            if(imagens.isEmpty()){
+                Intent k = new Intent(this, Vitoria.class);
+                startActivity(k);
+            }
         }
     }
 
