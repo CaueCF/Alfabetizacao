@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, Runnable {
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int vazio;
     private Elemento aux;
     private ProgressBar progresso;
+    private String x;
+    private ArrayList<String> silabas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,23 +39,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         principal = (Button) findViewById(R.id.buttonImagem);
         progresso = (ProgressBar) findViewById(R.id.progressBar);
 
-        String x = new String();
+        x = new String();
         Intent i = getIntent();
-        Intent i2 = getIntent();
 
         if (i != null) {
             Bundle so = new Bundle();
             so = i.getExtras();
             if (so != null) {
-                x = so.getString("soletrando", null);
+                x = so.getString("tipo", null);
             }
-        } else if (i2 != null) {
+        } /*else if (i2 != null) {
             Bundle si = new Bundle();
             si = i.getExtras();
             if (si != null) {
                 x = si.getString("silabas", null);
             }
-        }
+        }*/
 
         progresso.setPadding(100, 0, 100, 0);
 
@@ -63,16 +65,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else if(x.equals("silabas")){
             carregaElementoSilaba();
         }
+
         Collections.shuffle(imagens);
 
         progresso.setMax(imagens.size());
         aux = imagens.get(0);
         btns = new ArrayList<Button>();
-        vazio = aux.getTextoImagem().length() - 1;
+
+        if(x.equals("soletrando")) {
+            vazio = aux.getTextoImagem().length() - 1;
+        }else if(x.equals("silabas")){
+
+            silabas = new ArrayList<String>();
+            silabas.addAll(Arrays.asList(aux.getTextoImagem().split("-")));
+            vazio = silabas.size()-1;
+        }
+
 
         handler = new Handler();
         handler.postDelayed(this, 2500);
-
 
     }
 
@@ -180,14 +191,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imagens.add(e10);
     }
 
-    public void carregaJogo(){
+    public void carregaBotoes(){
 
+        btns.clear();
+
+        if(x.equals("soletrando")) {
+            botoesPalavra();
+        }else if(x.equals("silabas")){
+            botoesSilaba();
+        }
+    }
+
+    public void botoesPalavra(){
         for(char c: aux.getTextoImagem().toCharArray()){
             Button atual = new Button(this);
             atual.setText(Character.toString(c));
             atual.setOnClickListener(this);
             btns.add(atual);
         }
+    }
+
+    public void botoesSilaba(){
+
+        for(String s: silabas){
+            Button atual = new Button(this);
+            atual.setText(s);
+            atual.setOnClickListener(this);
+            btns.add(atual);
+        }
+    }
+
+    public void carregaJogo(){
+
+        carregaBotoes();
 
         Collections.shuffle(btns);
 
@@ -212,12 +248,133 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void adiciona(String s){
+        if(x.equals("soletrando")) {
+            adicionaLetra(s.toCharArray()[0]);
+        }else if(x.equals("silabas")){
+            adicionaSilaba(s);
+        }
+    }
+
     public void adicionaLetra(char c){
         for(int i = 10; i<15; i++){
             TextView t = findViewById(i);
             if(t.getText() == "_"){
                 t.setText(Character.toString(c));
                 break;
+            }
+        }
+    }
+
+    public void adicionaSilaba(String s){
+        for(int i = 10; i<15; i++){
+            TextView t = findViewById(i);
+            if(t.getText() == "_"){
+                t.setText(s);
+                break;
+            }
+        }
+    }
+
+    public void proximaFigura(){
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
+            public void run() {
+
+                if(!imagens.isEmpty()) {
+
+                    imagens.remove(0);
+                    aux = imagens.get(0);
+                    text.removeAllViews();
+                    botoes.removeAllViews();
+                    silabas.clear();
+
+                    carregaJogo();
+
+                    int passo = progresso.getProgress()+1;
+                    progresso.setProgress(passo);
+
+                    if(x.equals("soletrando")) {
+                        vazio = aux.getTextoImagem().length() - 1;
+                    }else if(x.equals("silabas")){
+
+                        silabas.addAll(Arrays.asList(aux.getTextoImagem().split("-")));
+
+                        vazio = silabas.size()-1;
+                    }
+
+                }
+            }
+        }, 1500);
+    }
+
+    public void verifica(){
+        if(x.equals("soletrando")) {
+            verificaPalavra();
+        }else if(x.equals("silabas")){
+            verificaSilabas();
+        }
+    }
+
+    public void verificaSilabas(){
+        vazio = -1;
+        ArrayList<String> palavra = new ArrayList<String>();
+
+        ArrayList<String> certa = new ArrayList<String>();
+        certa.addAll(Arrays.asList(aux.getTextoImagem().split("-")));
+
+        for(int i = 10; i<=14; i++){
+
+            TextView t = findViewById(i);
+
+            if(t != null) {
+
+                palavra.add(t.getText().toString());
+            }
+        }
+
+        for(int i = 0; i<palavra.size(); i++){
+
+            TextView t = findViewById(10 + i);
+            Button b = btns.get(i);
+
+            if(t != null && b != null) {
+
+                if(!palavra.get(i).equals(certa.get(i))){
+
+                    t.setText("_");
+                    t.setTextColor(Color.rgb(101, 63, 33));
+
+                    for (Button l : btns) {
+
+                        if (l.getText().equals(palavra.get(i))) {
+
+                            l.setVisibility(View.VISIBLE);
+                            l.setClickable(true);
+                            l.setBackgroundColor(Color.rgb(101, 63, 33)); //marrom
+                            break;
+                        }
+                    }
+                    vazio++;
+
+                }
+                else {
+
+                    t.setTextColor(Color.BLACK);
+                }
+
+            }
+        }
+
+        if(vazio == -1){
+
+            if(imagens.isEmpty()){
+                Intent k = new Intent(this, Vitoria.class);
+                startActivity(k);
+            }
+            else {
+                proximaFigura();
             }
         }
     }
@@ -271,33 +428,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(vazio == -1){
 
-
-
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-
-                public void run() {
-
-                    if(!imagens.isEmpty()) {
-
-                        imagens.remove(0);
-                        aux = imagens.get(0);
-                        text.removeAllViews();
-                        botoes.removeAllViews();
-                        btns.clear();
-
-                        carregaJogo();
-
-                        int passo = progresso.getProgress()+1;
-                        progresso.setProgress(passo);
-                        vazio = aux.getTextoImagem().length() - 1;
-                    }
-                }
-            }, 1500);
-
             if(imagens.isEmpty()){
                 Intent k = new Intent(this, Vitoria.class);
                 startActivity(k);
+            }
+            else {
+                proximaFigura();
             }
         }
     }
@@ -311,7 +447,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 b.setClickable(false);
                 b.setVisibility(View.INVISIBLE);
-                adicionaLetra(b.getText().charAt(0));
+                adiciona(b.getText().toString());
 
                 if (vazio > 0) {
 
@@ -319,7 +455,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 } else {
 
-                    verificaPalavra();
+                    verifica();
                 }
             }
         }

@@ -32,7 +32,7 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
             String valor = new String("soletrando");
             Intent i = new Intent (this, MainActivity.class);
             Bundle so = new Bundle();
-            so.putString("soletrando", valor);
+            so.putString("tipo", valor);
             i.putExtras(so);
             startActivity(i);
 
@@ -41,7 +41,7 @@ public class TelaPrincipal extends AppCompatActivity implements View.OnClickList
             String valor = new String("silabas");
             Intent i = new Intent (this, MainActivity.class);
             Bundle si = new Bundle();
-            si.putString("silabas", valor);
+            si.putString("tipo", valor);
             i.putExtras(si);
             startActivity(i);
         }
